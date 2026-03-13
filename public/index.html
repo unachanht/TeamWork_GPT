@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>TeamWork GPT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <section id="splash-screen" class="screen active">
+      <div class="splash-card">
+        <header class="splash-header">
+          <div class="badge">TeamWork GPT</div>
+          <h1>Build stronger teams, one conversation at a time</h1>
+          <p>
+            Choose the role that best describes your position on the team right now.
+          </p>
+        </header>
+        <button id="what-is-this" class="btn ghost" style="align-self: center; margin-bottom: -1rem;">What is
+          this?</button>
+        <div class="splash-actions">
+          <button id="know-role-yes" class="btn secondary">I know my role</button>
+          <button id="know-role-no" class="btn secondary">Not sure yet</button>
+        </div>
+        <p id="role-feedback" class="splash-feedback hidden" role="status" aria-live="polite"></p>
+        <div id="role-picker" class="style-picker hidden">
+          <p class="style-picker-title">
+            Which role best describes you on this team?
+          </p>
+          <div class="style-grid">
+            <button class="style-card" data-role="team_leader">
+              <h3>Team Leader</h3>
+              <p>decisive, accountability-focused, delegation-oriented</p>
+            </button>
+            <button class="style-card" data-role="facilitator">
+              <h3>Facilitator</h3>
+              <p>inclusive, process-aware, consensus-building</p>
+            </button>
+            <button class="style-card" data-role="contributor">
+              <h3>Individual Contributor</h3>
+              <p>execution-oriented, detail-focused, delivery-driven</p>
+            </button>
+            <button class="style-card" data-role="new_member">
+              <h3>New Member</h3>
+              <p>learning-oriented, onboarding-focused, trust-building</p>
+            </button>
+          </div>
+        </div>
+        <button id="splash-continue" class="btn cta" disabled>Continue</button>
+      </div>
+    </section>
+
+    <section id="carousel-screen" class="screen hidden">
+      <div class="carousel-layout">
+        <header class="carousel-header">
+          <button id="carousel-back" class="btn ghost" aria-label="Back to main menu">Back</button>
+          <div>
+            <div class="badge light">Preview</div>
+            <h2>See how each role responds</h2>
+            <p>
+              Explore common teamwork challenges and compare how a Team Leader, Facilitator, Contributor, and New Member
+              would approach them. Slides advance every few seconds.
+            </p>
+          </div>
+          <div class="carousel-controls">
+            <button id="carousel-prev" class="btn ghost" aria-label="Previous scenario">&lt;</button>
+            <button id="carousel-next" class="btn ghost" aria-label="Next scenario">&gt;</button>
+          </div>
+        </header>
+        <div class="slides-wrapper">
+          <div id="scenario-slides" class="slides"></div>
+        </div>
+        <div id="carousel-progress" class="carousel-progress"></div>
+        <div class="preference-section">
+          <p class="preference-title">Which perspective feels closest to yours right now?</p>
+          <div id="preference-buttons" class="preference-buttons"></div>
+          <button id="start-chat" class="btn cta" disabled>Start chatting</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="chat-screen" class="screen hidden">
+      <div class="chat-layout">
+        <header class="chat-header">
+          <div class="chat-header-content">
+            <div class="badge">TeamWork GPT</div>
+            <h2>Your teamwork assistant</h2>
+            <h3 id="active-mode-label" class="mode-label">Chatting as Team Leader – Forming a Team</h3>
+          </div>
+          <div class="chat-header-actions">
+            <button id="reset-onboarding" class="btn ghost" type="button">Restart intro</button>
+            <button id="clear-history" class="btn danger" type="button">Clear history</button>
+          </div>
+        </header>
+
+        <nav id="role-pill-group" class="style-pill-group"></nav>
+        <nav id="situation-pill-group" class="task-pill-group"></nav>
+
+        <section id="messages" class="chat-messages"></section>
+
+        <form id="chat-form" class="chat-input" autocomplete="off">
+          <textarea id="user-input" rows="1"
+            placeholder="Describe your team situation and press Enter (Shift+Enter for a new line)" required></textarea>
+          <button id="regenerate-btn" type="button" class="btn ghost" disabled>Regenerate</button>
+          <button id="send-btn" type="submit" class="btn primary">Send</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <div id="info-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button id="close-modal" class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">What is TeamWork GPT?</h2>
+      <div class="modal-body">
+        <p>
+          TeamWork GPT is an AI-powered teamwork assistant designed for ENTR550 students. It helps you navigate
+          common team challenges using proven frameworks and templates:
+        </p>
+        <ul>
+          <li><strong>Team Charter:</strong> Define mission, roles, goals, and norms</li>
+          <li><strong>Meeting Agendas:</strong> Plan productive, time-boxed meetings</li>
+          <li><strong>Conflict Resolution:</strong> A 6-step framework for working through disagreements</li>
+          <li><strong>Accountability Tracking:</strong> Keep tasks, owners, and deadlines visible</li>
+          <li><strong>Peer Feedback (SBI):</strong> Give honest, constructive feedback using Situation-Behavior-Impact</li>
+        </ul>
+        <p>
+          Choose a team role to personalize the advice, then pick a situation to get template-structured guidance
+          tailored to your specific challenge.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div id="custom-situation-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button id="close-custom-situation-modal" class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Create Custom Situation</h2>
+      <form id="custom-situation-form">
+        <div class="form-group">
+          <label for="custom-situation-name">Situation Name</label>
+          <input type="text" id="custom-situation-name" placeholder="e.g., Onboarding a New Member" required
+            maxlength="30" />
+        </div>
+        <div class="form-group">
+          <label for="custom-situation-desc">Description (Context)</label>
+          <textarea id="custom-situation-desc" rows="4"
+            placeholder="Describe the teamwork situation you need help with..." required></textarea>
+        </div>
+        <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">Create Situation</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">Clear History?</h2>
+      <div class="modal-body">
+        <p>Are you sure you want to delete all messages? This action cannot be undone.</p>
+      </div>
+      <div class="splash-actions" style="justify-content: flex-end; margin-top: 1.5rem;">
+        <button id="cancel-clear" class="btn ghost">Cancel</button>
+        <button id="confirm-clear" class="btn danger">Yes, Clear</button>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+
+</html>
