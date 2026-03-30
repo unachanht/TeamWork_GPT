@@ -40,6 +40,13 @@ const customSituationForm = document.querySelector("#custom-situation-form");
 const customSituationNameInput = document.querySelector("#custom-situation-name");
 const customSituationDescInput = document.querySelector("#custom-situation-desc");
 
+const mbtiBtn = document.querySelector("#mbti-btn");
+const mbtiModal = document.querySelector("#mbti-modal");
+const closeMbtiModalBtn = document.querySelector("#close-mbti-modal");
+const mbtiGrid = document.querySelector("#mbti-grid");
+const mbtiTypeBtns = mbtiGrid.querySelectorAll(".mbti-type-btn");
+const clearMbtiBtn = document.querySelector("#clear-mbti");
+
 const confirmModal = document.querySelector("#confirm-modal");
 const confirmClearBtn = document.querySelector("#confirm-clear");
 const cancelClearBtn = document.querySelector("#cancel-clear");
@@ -70,7 +77,7 @@ const SITUATIONS = {
   },
   running_meetings: {
     label: "Running Meetings",
-    description: "Plan productive, time-boxed meetings.",
+    description: "Plan and track meetings with a structured agenda template.",
   },
   resolving_conflict: {
     label: "Resolving Conflict",
@@ -83,6 +90,14 @@ const SITUATIONS = {
   giving_feedback: {
     label: "Giving Feedback",
     description: "Give constructive feedback using the SBI model.",
+  },
+  mbti_team: {
+    label: "MBTI Dynamics",
+    description: "Understand your team through MBTI personality types and get role/pairing suggestions.",
+  },
+  peer_evaluation: {
+    label: "Peer Evaluation",
+    description: "Generate a tailored peer evaluation template for your team.",
   },
 };
 
@@ -139,6 +154,7 @@ let preselectedRole = null;
 let selectedRole = null;
 let selectedSituation = "forming_team";
 let customSituationData = null;
+let selectedMbti = null;
 let currentSlide = 0;
 let autoRotationTimer = null;
 
@@ -310,11 +326,12 @@ const updateActiveModeLabel = () => {
     situationLabel = SITUATIONS[selectedSituation].label;
   }
 
-  activeModeLabel.textContent = `Chatting as ${roleLabel} – ${situationLabel}`;
+  const mbtiSuffix = selectedMbti ? ` (${selectedMbti})` : "";
+  activeModeLabel.textContent = `Chatting as ${roleLabel}${mbtiSuffix} – ${situationLabel}`;
 };
 
 const renderSituationPills = () => {
-  if (!selectedSituation || !SITUATIONS[selectedSituation]) {
+  if (!selectedSituation || (!SITUATIONS[selectedSituation] && selectedSituation !== "custom")) {
     selectedSituation = Object.keys(SITUATIONS)[0];
   }
 
@@ -345,11 +362,17 @@ const renderSituationPills = () => {
     customBtn.classList.add("active");
   }
   customBtn.addEventListener("click", () => {
-    if (customSituationData) {
+    if (customSituationData && selectedSituation !== "custom") {
+      // First click selects the existing custom situation
       selectedSituation = "custom";
       renderSituationPills();
       updateActiveModeLabel();
     } else {
+      // No custom data yet, or already selected — open modal to create/edit
+      if (customSituationData) {
+        customSituationNameInput.value = customSituationData.label;
+        customSituationDescInput.value = customSituationData.description;
+      }
       customSituationModal.classList.add("active");
     }
   });
@@ -397,6 +420,48 @@ const removeTypingIndicator = () => {
   renderMessages();
 };
 
+const formatMarkdown = (text) => {
+  // Escape HTML first to prevent injection
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  return escaped
+    // Headers: ###, ##, #
+    .replace(/^### (.+)$/gm, "<h4>$1</h4>")
+    .replace(/^## (.+)$/gm, "<h3>$1</h3>")
+    .replace(/^# (.+)$/gm, "<h3>$1</h3>")
+    // Bold + italic: ***text***
+    .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+    // Bold: **text**
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    // Italic: *text*
+    .replace(/\*(.+?)\*/g, "<em>$1</em>")
+    // Unordered list items: - item
+    .replace(/^- (.+)$/gm, "<li>$1</li>")
+    // Ordered list items: 1. item
+    .replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>")
+    // Wrap consecutive <li> in <ul>
+    .replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul>$1</ul>")
+    // Horizontal rule
+    .replace(/^---$/gm, "<hr>")
+    // Line breaks: double newline = paragraph break, single = <br>
+    .replace(/\n\n/g, "</p><p>")
+    .replace(/\n/g, "<br>")
+    // Wrap in paragraph
+    .replace(/^/, "<p>")
+    .replace(/$/, "</p>")
+    // Clean up empty paragraphs
+    .replace(/<p><\/p>/g, "")
+    // Clean up paragraphs that only contain block elements
+    .replace(/<p>(<h[34]>)/g, "$1")
+    .replace(/(<\/h[34]>)<\/p>/g, "$1")
+    .replace(/<p>(<ul>)/g, "$1")
+    .replace(/(<\/ul>)<\/p>/g, "$1")
+    .replace(/<p>(<hr>)<\/p>/g, "$1");
+};
+
 const renderMessages = () => {
   if (!messagesEl) return;
   messagesEl.innerHTML = "";
@@ -410,7 +475,11 @@ const renderMessages = () => {
 
     const bubbleEl = document.createElement("div");
     bubbleEl.className = "bubble";
-    bubbleEl.textContent = msg.content;
+    if (msg.role === "assistant") {
+      bubbleEl.innerHTML = formatMarkdown(msg.content);
+    } else {
+      bubbleEl.textContent = msg.content;
+    }
 
     messageEl.appendChild(avatarEl);
     messageEl.appendChild(bubbleEl);
@@ -438,6 +507,7 @@ const sendMessage = async () => {
     role: selectedRole || "team_leader",
     situation: selectedSituation || "forming_team",
     customSituation: selectedSituation === "custom" ? customSituationData : undefined,
+    mbtiType: selectedMbti || undefined,
   };
 
   sendBtn.disabled = true;
@@ -650,6 +720,41 @@ customSituationModal.addEventListener("click", (e) => {
   if (e.target === customSituationModal) {
     customSituationModal.classList.remove("active");
   }
+});
+
+mbtiBtn.addEventListener("click", () => {
+  mbtiModal.classList.add("active");
+});
+
+closeMbtiModalBtn.addEventListener("click", () => {
+  mbtiModal.classList.remove("active");
+});
+
+mbtiModal.addEventListener("click", (e) => {
+  if (e.target === mbtiModal) {
+    mbtiModal.classList.remove("active");
+  }
+});
+
+mbtiTypeBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    mbtiTypeBtns.forEach((b) => b.classList.remove("selected"));
+    btn.classList.add("selected");
+    selectedMbti = btn.dataset.mbti;
+    mbtiBtn.textContent = `MBTI: ${selectedMbti}`;
+    mbtiBtn.classList.add("has-type");
+    updateActiveModeLabel();
+    mbtiModal.classList.remove("active");
+  });
+});
+
+clearMbtiBtn.addEventListener("click", () => {
+  mbtiTypeBtns.forEach((b) => b.classList.remove("selected"));
+  selectedMbti = null;
+  mbtiBtn.textContent = "MBTI";
+  mbtiBtn.classList.remove("has-type");
+  updateActiveModeLabel();
+  mbtiModal.classList.remove("active");
 });
 
 document.addEventListener("visibilitychange", () => {

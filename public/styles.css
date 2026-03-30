@@ -566,6 +566,61 @@ body {
   gap: 0.75rem;
 }
 
+.btn.mbti {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn.mbti:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+}
+
+.btn.mbti.has-type {
+  background: linear-gradient(135deg, #6d28d9, #5b21b6);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.mbti-modal-subtitle {
+  color: #64748b;
+  margin: -0.5rem 0 1rem;
+  font-size: 0.95rem;
+}
+
+.mbti-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.mbti-type-btn {
+  padding: 0.6rem 0.5rem;
+  border-radius: 10px;
+  border: 1.5px solid rgba(124, 58, 237, 0.25);
+  background: rgba(245, 243, 255, 0.8);
+  color: #5b21b6;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.mbti-type-btn:hover {
+  background: rgba(124, 58, 237, 0.1);
+  transform: translateY(-1px);
+}
+
+.mbti-type-btn.selected {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
 .style-pill-group {
   display: flex;
   flex-wrap: wrap;
@@ -682,6 +737,44 @@ body {
 
 .message.assistant .bubble {
   background: rgba(13, 148, 136, 0.08);
+  white-space: normal;
+}
+
+.message.assistant .bubble p {
+  margin: 0.4rem 0;
+}
+
+.message.assistant .bubble h3,
+.message.assistant .bubble h4 {
+  margin: 0.8rem 0 0.3rem;
+  color: #0f766e;
+}
+
+.message.assistant .bubble h3 {
+  font-size: 1.05rem;
+}
+
+.message.assistant .bubble h4 {
+  font-size: 0.95rem;
+}
+
+.message.assistant .bubble ul {
+  margin: 0.4rem 0;
+  padding-left: 1.4rem;
+}
+
+.message.assistant .bubble li {
+  margin: 0.25rem 0;
+}
+
+.message.assistant .bubble strong {
+  color: #134e4a;
+}
+
+.message.assistant .bubble hr {
+  border: none;
+  border-top: 1px solid rgba(13, 148, 136, 0.2);
+  margin: 0.75rem 0;
 }
 
 .typing-indicator {

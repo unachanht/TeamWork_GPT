@@ -91,6 +91,7 @@
             <h3 id="active-mode-label" class="mode-label">Chatting as Team Leader – Forming a Team</h3>
           </div>
           <div class="chat-header-actions">
+            <button id="mbti-btn" class="btn mbti" type="button">MBTI</button>
             <button id="reset-onboarding" class="btn ghost" type="button">Restart intro</button>
             <button id="clear-history" class="btn danger" type="button">Clear history</button>
           </div>
@@ -122,10 +123,12 @@
         </p>
         <ul>
           <li><strong>Team Charter:</strong> Define mission, roles, goals, and norms</li>
-          <li><strong>Meeting Agendas:</strong> Plan productive, time-boxed meetings</li>
+          <li><strong>Meeting Agendas:</strong> Plan and track meetings with a full agenda and accountability template</li>
           <li><strong>Conflict Resolution:</strong> A 6-step framework for working through disagreements</li>
           <li><strong>Accountability Tracking:</strong> Keep tasks, owners, and deadlines visible</li>
           <li><strong>Peer Feedback (SBI):</strong> Give honest, constructive feedback using Situation-Behavior-Impact</li>
+          <li><strong>MBTI Dynamics:</strong> Discover team strengths, ideal pairings, and role fit based on personality types</li>
+          <li><strong>Peer Evaluation:</strong> Generate a tailored peer evaluation template through a guided conversation</li>
         </ul>
         <p>
           Choose a team role to personalize the advice, then pick a situation to get template-structured guidance
@@ -151,6 +154,33 @@
         </div>
         <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">Create Situation</button>
       </form>
+    </div>
+  </div>
+
+  <div id="mbti-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button id="close-mbti-modal" class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Select Your MBTI Type</h2>
+      <p class="mbti-modal-subtitle">Optional — this personalizes advice to your personality type.</p>
+      <div id="mbti-grid" class="mbti-grid">
+        <button class="mbti-type-btn" data-mbti="INTJ">INTJ</button>
+        <button class="mbti-type-btn" data-mbti="INTP">INTP</button>
+        <button class="mbti-type-btn" data-mbti="ENTJ">ENTJ</button>
+        <button class="mbti-type-btn" data-mbti="ENTP">ENTP</button>
+        <button class="mbti-type-btn" data-mbti="INFJ">INFJ</button>
+        <button class="mbti-type-btn" data-mbti="INFP">INFP</button>
+        <button class="mbti-type-btn" data-mbti="ENFJ">ENFJ</button>
+        <button class="mbti-type-btn" data-mbti="ENFP">ENFP</button>
+        <button class="mbti-type-btn" data-mbti="ISTJ">ISTJ</button>
+        <button class="mbti-type-btn" data-mbti="ISFJ">ISFJ</button>
+        <button class="mbti-type-btn" data-mbti="ESTJ">ESTJ</button>
+        <button class="mbti-type-btn" data-mbti="ESFJ">ESFJ</button>
+        <button class="mbti-type-btn" data-mbti="ISTP">ISTP</button>
+        <button class="mbti-type-btn" data-mbti="ISFP">ISFP</button>
+        <button class="mbti-type-btn" data-mbti="ESTP">ESTP</button>
+        <button class="mbti-type-btn" data-mbti="ESFP">ESFP</button>
+      </div>
+      <button id="clear-mbti" class="btn ghost" type="button" style="width: 100%; margin-top: 0.75rem;">Clear selection</button>
     </div>
   </div>
 
