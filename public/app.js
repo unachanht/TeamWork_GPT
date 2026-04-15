@@ -40,6 +40,10 @@ const customSituationForm = document.querySelector("#custom-situation-form");
 const customSituationNameInput = document.querySelector("#custom-situation-name");
 const customSituationDescInput = document.querySelector("#custom-situation-desc");
 
+const downloadsBtn = document.querySelector("#downloads-btn");
+const downloadsModal = document.querySelector("#downloads-modal");
+const closeDownloadsModalBtn = document.querySelector("#close-downloads-modal");
+
 const mbtiBtn = document.querySelector("#mbti-btn");
 const mbtiModal = document.querySelector("#mbti-modal");
 const closeMbtiModalBtn = document.querySelector("#close-mbti-modal");
@@ -98,6 +102,10 @@ const SITUATIONS = {
   peer_evaluation: {
     label: "Peer Evaluation",
     description: "Generate a tailored peer evaluation template for your team.",
+  },
+  team_bonding: {
+    label: "Team Bonding",
+    description: "Plan icebreakers, bonding questions, and team-building activities.",
   },
 };
 
@@ -719,6 +727,20 @@ customSituationForm.addEventListener("submit", (e) => {
 customSituationModal.addEventListener("click", (e) => {
   if (e.target === customSituationModal) {
     customSituationModal.classList.remove("active");
+  }
+});
+
+downloadsBtn.addEventListener("click", () => {
+  downloadsModal.classList.add("active");
+});
+
+closeDownloadsModalBtn.addEventListener("click", () => {
+  downloadsModal.classList.remove("active");
+});
+
+downloadsModal.addEventListener("click", (e) => {
+  if (e.target === downloadsModal) {
+    downloadsModal.classList.remove("active");
   }
 });
 

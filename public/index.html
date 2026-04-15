@@ -92,6 +92,7 @@
           </div>
           <div class="chat-header-actions">
             <button id="mbti-btn" class="btn mbti" type="button">MBTI</button>
+            <button id="downloads-btn" class="btn downloads" type="button">Templates</button>
             <button id="reset-onboarding" class="btn ghost" type="button">Restart intro</button>
             <button id="clear-history" class="btn danger" type="button">Clear history</button>
           </div>
@@ -129,6 +130,7 @@
           <li><strong>Peer Feedback (SBI):</strong> Give honest, constructive feedback using Situation-Behavior-Impact</li>
           <li><strong>MBTI Dynamics:</strong> Discover team strengths, ideal pairings, and role fit based on personality types</li>
           <li><strong>Peer Evaluation:</strong> Generate a tailored peer evaluation template through a guided conversation</li>
+          <li><strong>Team Bonding:</strong> Plan icebreakers, bonding questions, and team-building activities</li>
         </ul>
         <p>
           Choose a team role to personalize the advice, then pick a situation to get template-structured guidance
@@ -154,6 +156,48 @@
         </div>
         <button type="submit" class="btn primary" style="width: 100%; margin-top: 1rem;">Create Situation</button>
       </form>
+    </div>
+  </div>
+
+  <div id="downloads-modal" class="modal-overlay">
+    <div class="modal-card">
+      <button id="close-downloads-modal" class="modal-close" aria-label="Close modal">&times;</button>
+      <h2 class="modal-title">Download Templates</h2>
+      <p class="downloads-subtitle">Printable PDF templates you can use offline with your team.</p>
+      <div class="downloads-list">
+        <a href="/templates/Meeting Agenda and Accountability Template (1).pdf" download class="download-card">
+          <div class="download-icon">&#128203;</div>
+          <div class="download-info">
+            <h3>Meeting Agenda & Accountability Tracker</h3>
+            <p>8-section template for planning meetings, tracking decisions, action items, and follow-ups.</p>
+          </div>
+          <span class="download-arrow">&#8595;</span>
+        </a>
+        <a href="/templates/Team Bonding Template.pdf" download class="download-card">
+          <div class="download-icon">&#129309;</div>
+          <div class="download-info">
+            <h3>Team Bonding Materials</h3>
+            <p>Icebreakers, bonding questions (light to deep), and a structured expectations alignment activity.</p>
+          </div>
+          <span class="download-arrow">&#8595;</span>
+        </a>
+        <a href="/templates/MBTI Template (1).pdf" download class="download-card">
+          <div class="download-icon">&#129504;</div>
+          <div class="download-info">
+            <h3>MBTI Team Dynamics</h3>
+            <p>All 16 personality types with strengths, challenges, ideal pairings, and role alignment.</p>
+          </div>
+          <span class="download-arrow">&#8595;</span>
+        </a>
+        <a href="/templates/Peer Evaluation Determinator (1).pdf" download class="download-card">
+          <div class="download-icon">&#128221;</div>
+          <div class="download-info">
+            <h3>Peer Evaluation Guide</h3>
+            <p>Framework for generating tailored peer evaluation templates based on project type and goals.</p>
+          </div>
+          <span class="download-arrow">&#8595;</span>
+        </a>
+      </div>
     </div>
   </div>
 

@@ -54,19 +54,60 @@ MBTI Role Alignment:
 Extraversion → Facilitator / Presenter | Introversion → Researcher / Analyst | Sensing → Detail Manager / Quality Control | Intuition → Idea Generation / Strategy | Thinking → Decision Analysis / Problem Solving | Feeling → Team Support / Conflict Resolution | Judging → Project Manager / Deadline Tracking | Perceiving → Creative Exploration / Adaptability`;
 
 const SITUATION_PROMPTS = {
-  forming_team: `Help the user create a Team Charter. Structure your response using this template:
+  forming_team: `Help the user create a Team Charter & Constitution. Walk through each section and fill it in based on the user's input. Structure your response using this template:
 
-**Team Charter**
-1. **Mission Statement** — One clear sentence describing the team's purpose
-2. **Members & Roles** — Table of member names, roles, and responsibilities
-3. **SMART Goals** — 2–4 specific, measurable, achievable, relevant, time-bound goals
-4. **Team Norms** — 4–6 ground rules for how the team will work together
-5. **Decision-Making Process** — How decisions will be made (consensus, majority vote, leader decides, etc.)
-6. **Communication Channels** — Which tools/platforms, expected response times, meeting cadence
-7. **Conflict Escalation Path** — Steps to resolve disagreements before they escalate
-8. **Review Cadence** — When and how the team will revisit this charter
+**Team Charter & Constitution**
 
-Tailor the charter to the user's specific team situation. Ask clarifying questions if needed.`,
+**1. PROJECT INFORMATION**
+- Project:
+- Team Name:
+- Basic Project Outline:
+
+**2. TEAM MEMBERS AND ROLES**
+| Name | Role | Responsibilities |
+|------|------|-----------------|
+
+**3. WHAT EACH ROLE ACTUALLY MEANS**
+| Role | What This Person Is Responsible For |
+|------|-------------------------------------|
+For each role listed in the team, define the concrete responsibilities so there is no ambiguity.
+
+**4. HOW WE COMMUNICATE**
+| Area | Our Agreement |
+|------|---------------|
+| Primary communication method | |
+| Expected response time | |
+| Meeting frequency | |
+| Meeting method | |
+| How we share files/resources | |
+
+**5. RULES WE AGREE ON**
+| # | Agreement / Ground Rule |
+|---|------------------------|
+List 5-8 ground rules the team commits to.
+
+**6. DESIRED PROJECT OUTCOMES**
+| Team Member | Desired Outcome |
+|-------------|----------------|
+Each member states what they personally want to get out of this project.
+
+**7. GROUP DESIRED PROJECT OUTCOME**
+One shared statement of what the team wants to achieve together.
+
+**8. IF CONFLICT ARISES**
+| Step | What We'll Do |
+|------|--------------|
+Define 3-5 escalation steps the team agrees to follow.
+
+**9. UPDATING THIS CHARTER**
+- Can we change this?
+- How?
+- Who keeps the master copy?
+
+**10. WE AGREE TO THIS**
+List all team member names as signatories.
+
+Ask clarifying questions if needed. Do NOT invent team member names, roles, or project details the user has not provided — leave those blank or write "TBD" and ask.`,
 
   running_meetings: `Help the user plan an effective meeting using this structured Meeting Agenda and Accountability Tracker. Walk through each section and fill it in based on the user's context.
 
@@ -109,17 +150,33 @@ Park items that need more time for the next meeting.
 
 Help the user fill in each section based on their specific meeting context. If they haven't had the meeting yet, help them plan sections 1-3. If they're reflecting after a meeting, help them complete all sections. Ask clarifying questions if needed.`,
 
-  resolving_conflict: `Help the user navigate a team conflict using this 6-step framework:
+  resolving_conflict: `You are a conflict resolution assistant helping members of a group project navigate disagreements and interpersonal issues. Your goal is to resolve conflict in a way that preserves relationships, keeps the team productive, and produces fair outcomes.
 
-**Conflict Resolution Framework**
-1. **Pause & Reflect** — What happened? What emotions are you feeling? Separate facts from interpretations.
-2. **Share & Listen** — Each person shares their perspective using "I" statements. Active listening, no interrupting.
-3. **Identify Interests** — What does each person actually need? Look beneath positions to find shared interests.
-4. **Brainstorm Options** — Generate multiple solutions without judging. Focus on "both/and" rather than "either/or."
-5. **Agree & Commit** — Choose a solution together. Define specific actions, owners, and timelines.
-6. **Follow Up** — Schedule a check-in to see how the agreement is working. Adjust if needed.
+**Step 1: Identify the conflict type before responding:**
+- Is this a **task conflict** (disagreement about how to do the work)? → Use structured problem-solving
+- Is this a **process/status conflict** (disagreement about roles, timelines, or credit)? → Use interest-based compromise
+- Is this a **relationship conflict** (personal tension, trust breakdown)? → Focus on communication, empathy, and de-escalation before anything else
+- Is this a **policy or values violation** (clear wrongdoing, ethical breach, or misconduct)? → Escalate to group leader and recommend a direct, firm resolution
 
-Walk the user through each step based on their specific conflict situation. Be empathetic but structured.`,
+**Step 2: Choose your approach:**
+- Default to problem-solving. Help the user understand the other party's perspective, identify shared goals, and work toward a mutual solution. Do not take sides.
+- Act early. If conflict seems minor but unresolved, treat it seriously. Delayed conflict hardens into relationship conflict, which is far more damaging.
+- Only recommend escalation or a forced resolution if there is a clear policy violation, repeated misconduct, or if problem-solving has already failed.
+
+**Step 3: How to communicate:**
+- Always maintain a neutral, calm, and empathetic tone
+- Never blame individuals — focus on the issue, not the person
+- Acknowledge emotions before jumping to solutions
+- Ask clarifying questions to understand the root cause before recommending anything
+- Use positive, constructive language. Negative or accusatory framing makes conflict worse
+
+**What you should never do:**
+- Take a hard side in a dispute without clear evidence of wrongdoing
+- Skip straight to escalation for routine disagreements
+- Ignore emotional context — unaddressed feelings escalate into relationship conflict
+- Let the conversation stall — always move toward a resolution or a clear next step
+
+Walk the user through resolution based on the conflict type you identified. Be empathetic but structured.`,
 
   tracking_progress: `Help the user set up an accountability tracker. Structure your response using this template:
 
@@ -210,6 +267,58 @@ Output rules:
 Generate a complete, clearly labeled template ready to use with no placeholders left unfilled. Always include a header section for evaluator name, person being evaluated, project name, and date. The rating section and criteria should reflect the field type and evaluation goal as described above. Include open-ended fields if requested or if the goal involves dynamics, respect, or interpersonal behavior.
 
 After outputting the template, ask the user if they'd like to adjust anything (criteria, tone, scoring method, or layout) and refine accordingly.`,
+
+  team_bonding: `You are a team bonding facilitator. Help the user plan and run team bonding activities to build trust, communication, and stronger relationships within their team. Use the following materials to guide your responses.
+
+**1. Icebreaker Activities (Quick Start)**
+Suggest these for teams that need a fast, low-pressure warm-up:
+- **2 Truths and a Lie** — Each person shares 3 statements, team guesses the lie
+- **Would You Rather** — Fun either/or choices to spark conversation
+- **Category Game** — Name items in a category, no repeats, 5 seconds max per person
+- **This or That** — Quick preference picks (Coffee or Tea? Football or Basketball?)
+- **High-Low** — Each person shares one good thing this week and one challenge
+
+**2. Team Bonding Question Set**
+Use these progressively — start light, go deeper as the team builds trust:
+
+**Light Questions** (good for first meetings):
+- What motivates you to do your best work?
+- What's your ideal work environment?
+- What's your favorite way to relax after a long day?
+- What's your favorite food or meal?
+- What's one thing that always makes your day better?
+- Morning or night person? Why?
+- What's a hobby you enjoy outside of work/school?
+
+**Medium Questions** (good for teams that have worked together a bit):
+- What frustrates you in team settings?
+- How do you prefer to receive feedback?
+- What role do you usually take in group projects?
+- What does a good team look like to you?
+- What's one strength you bring to this team?
+- How do you prefer meetings to be run?
+
+**Deep Questions** (for teams ready for honest conversation):
+- What helps you feel respected in a team?
+- What's a past team experience that shaped you?
+- What makes you feel comfortable speaking up in a group?
+- What causes you to shut down in a team?
+- What kind of support do you need from teammates to do your best work?
+- What's one fear or concern you have about this project?
+- What motivates you beyond grades or outcomes?
+
+**3. Structured Bonding Activity: Team Expectations Alignment**
+Walk the team through this exercise:
+1. Each person answers independently:
+   - What do I expect from this team?
+   - What do I need to succeed?
+   - What behaviors do I expect from my teammates?
+   - How do I usually respond to conflict?
+2. Share responses with the group
+3. Identify common themes
+4. Agree on 3+ team rules based on the shared themes
+
+When helping the user, ask about their team's stage (just formed, mid-project, struggling, etc.) and team size to recommend the right activity level. Suggest a mix of icebreakers and questions appropriate to their comfort level. If they want a full bonding session, help them structure a timed agenda combining activities from all three sections.`,
 };
 
 const SITUATION_LABELS = {
@@ -220,6 +329,7 @@ const SITUATION_LABELS = {
   giving_feedback: "Giving Feedback",
   mbti_team: "MBTI Team Dynamics",
   peer_evaluation: "Peer Evaluation",
+  team_bonding: "Team Bonding",
 };
 
 const app = express();
@@ -232,6 +342,7 @@ const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
+app.use("/templates", express.static(path.join(__dirname, "..", "template")));
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
